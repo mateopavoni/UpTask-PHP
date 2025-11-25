@@ -1,0 +1,56 @@
+# =========================
+# Sistema / Editores
+# =========================
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+*.log
+*.swp
+*.bak
+*.tmp
+
+# =========================
+# Node / NPM / Gulp
+# =========================
+node_modules/
+package-lock.json
+yarn.lock
+.cache/
+.temp/
+gulpfile.js.map
+
+# =========================
+# Sass / CSS
+# =========================
+.sass-cache/
+*.css.map
+
+# =========================
+# Carpeta de compilación
+# =========================
+build/
+dist/
+
+
+# =========================
+# Configuración sensible
+# =========================
+.env
+.env.local
+.env.*.local
+config.php
+
+# =========================
+# PHP / Laravel / frameworks
+# =========================
+/vendor/
+cache/
+logs/
+sessions/
+storage/
+vendor/
+vendor
+info.php
+
+
