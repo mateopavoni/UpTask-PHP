@@ -64,4 +64,32 @@ class Usuario extends ActiveRecord {
         $this->token = bin2hex(random_bytes(16));
     }
 
+    public function validarEmail(){
+        if(!$this->email){
+            self::$alertas["error"][] = "El email del usuario es obligatorio";
+        }
+
+        if(!filter_var($this->email, FILTER_VALIDATE_EMAIL)){
+            self::$alertas["error"][] = "El email no es válido";
+        }
+
+        return self::$alertas;
+    }
+
+    public function validarPassword(){
+        if(!$this->password){
+            self::$alertas["error"][] = "El password del usuario es obligatorio";
+        }
+
+        if(strlen($this->password) < 8){
+            self::$alertas["error"][] = "El password del usuario debe tener al menos 8 carácteres";
+        }
+
+        if($this->password !== $this->password2){
+            self::$alertas["error"][] = "Los passwords no coinciden";
+        }
+
+        return self::$alertas;
+    }
+
 }

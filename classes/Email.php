@@ -47,4 +47,41 @@ class Email {
 
         $mail->send();
     }
+
+    public function enviarInstrucciones() {
+    $mail = new PHPMailer(true);
+
+    $mail->isSMTP();
+    $mail->Host = $_ENV['MAIL_HOST'];
+    $mail->SMTPAuth = true;
+    $mail->Port = $_ENV['MAIL_PORT'];
+    $mail->Username = $_ENV['MAIL_USERNAME'];
+    $mail->Password = $_ENV['MAIL_PASSWORD'];
+    $mail->SMTPSecure = $_ENV['MAIL_ENCRYPTION'];
+
+    $mail->setFrom($_ENV['MAIL_FROM_ADDRESS'], $_ENV['MAIL_FROM_NAME']);
+
+    $mail->addAddress($this->email, $this->nombre);
+    $mail->Subject = 'Restablece tu contraseña - UpTask';
+
+    $contenido = "
+        <html>
+            <p><strong>Hola {$this->nombre}</strong>,</p>
+            <p>Has solicitado restablecer tu contraseña. Para continuar, haz clic en el siguiente enlace:</p>
+            <p>
+                <a href='http://localhost:3000/reestablecer?token={$this->token}'>
+                    Restablecer Contraseña
+                </a>
+            </p>
+            <br>
+            <p>Si no solicitaste este cambio, puedes ignorar este mensaje.</p>
+        </html>
+    ";
+
+    $mail->isHTML(true);
+    $mail->CharSet = 'UTF-8';
+    $mail->Body = $contenido;
+    $mail->send();
+}
+
 }
