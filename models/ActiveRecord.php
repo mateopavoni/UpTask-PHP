@@ -66,7 +66,8 @@ class ActiveRecord {
 
     // Busqueda Where con Columna 
     public static function where($columna, $valor) {
-        $query = "SELECT * FROM " . static::$tabla . " WHERE {$columna} = '{$valor}'";
+        $query = "SELECT * FROM " . static::$tabla . " WHERE TRIM({$columna}) = '{$valor}'";
+        
         $resultado = self::consultarSQL($query);
         return array_shift($resultado);
     }
@@ -172,11 +173,19 @@ class ActiveRecord {
     public function sanitizarAtributos() {
         $atributos = $this->atributos();
         $sanitizado = [];
-        foreach($atributos as $key => $value ) {
-            $sanitizado[$key] = self::$db->escape_string($value);
+
+        foreach($atributos as $key => $value) {
+
+            if ($value === null) {
+                $sanitizado[$key] = null; // No lo convertimos a string
+            } else {
+                $sanitizado[$key] = self::$db->escape_string($value);
+            }
         }
+
         return $sanitizado;
     }
+
 
     public function sincronizar($args=[]) { 
         foreach($args as $key => $value) {

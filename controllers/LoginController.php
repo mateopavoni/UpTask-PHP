@@ -4,6 +4,7 @@ namespace Controllers;
 
 use Model\Usuario;
 use MVC\Router;
+use Classes\Email;
 
 class LoginController {
     public static function login(Router $router){
@@ -31,12 +32,29 @@ class LoginController {
 
             $alertas= $usuario->validarNuevaCuenta();
 
-            $existeUsuario = Usuario::where("email" , $usuario->email);
+            if(empty($alertas)){
+                $existeUsuario = Usuario::where("email" , $usuario->email);
 
-            if($existeUsuario){
-                Usuario::setAlerta("error", "El Usuario ya esta registrado");
+                if($existeUsuario){
+                    Usuario::setAlerta("error", "El Usuario ya esta registrado");
+                } else {
+                    $usuario -> hashPassword();
+
+                    unset($usuario->password2);
+
+                    $usuario -> crearToken();
+
+                    $resultado = $usuario->guardar();
+
+                    $email = new Email($usuario->email, $usuario->nombre, $usuario->token);
+
+                    $email->enviarConfirmacion();
+
+                    if($resultado){
+                        header("Location: /mensaje");
+                    }
+                }
             }
-
         }
 
         $router->render("auth/crear", [
@@ -74,8 +92,35 @@ class LoginController {
     }
 
     public static function confirmar(Router $router){
+
+        $token = trim($_GET["token"]);
+        $token = s($token); 
+
+
+        if(!$token) {
+            header("Location: /");
+            exit;
+        }
+
+        $usuario = Usuario::where("token", trim($token));
+        
+        if(!$usuario){
+            Usuario::setAlerta("error", "Token no válido o ya utilizado");
+        } else {
+            Usuario::setAlerta("success", "Tu cuenta ha sido confirmada");
+            $usuario->token = null;
+            $usuario->confirmado = 1;
+            $usuario->guardar();
+
+
+        }
+
+        $alertas = Usuario::getAlertas();
+
         $router->render("auth/confirmar", [
-            "titulo" => "Confirmar cuenta"
+            "titulo" => "Confirmar cuenta",
+            "alertas"=> $alertas
         ]);
     }
+
 }
