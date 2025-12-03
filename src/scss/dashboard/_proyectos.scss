@@ -1,11 +1,13 @@
 @use "base/mixins" as m;
 @use "base/variables" as v;
 
-.listado-proyectos{
+.listado-proyectos {
     list-style: none;
     padding: 0;
     margin-top: 3rem;
+
     @include m.grid(1, 2rem);
+
     @include m.tablet { 
         @include m.grid(2, 2rem);
     }
@@ -14,29 +16,46 @@
         @include m.grid(3, 2rem);
     }
 
-    .proyecto{
+    .proyecto {
         background-color: lighten(v.$indigo, 5%);
         min-height: 12rem;
         display: flex;
         align-items: center;
         padding: 2rem;
         line-height: 1.5;
-        transition: all .3s ease-in-out;
-        border-radius: 1rem;
+        border-radius: 1.2rem;
+        transition: transform .25s ease, background-color .25s ease, box-shadow .25s ease;
+        cursor: pointer;
+        box-shadow: 0 3px 8px rgba(0,0,0,.12);
 
-        &:hover{
+        &:hover {
+            transform: translateY(-4px);
             background-color: darken(v.$indigo, 10%);
+            box-shadow: 0 6px 14px rgba(0,0,0,.18);
         }
 
-        a{
+        a {
             color: v.$blanco;
+            font-size: 1.6rem;
+            font-weight: bold;
+            text-decoration: none;
         }
     }
-
 }
 
-.no-proyectos{
-    a{
+.no-proyectos {
+    text-align: center;
+    font-size: 1.8rem;
+    margin-top: 3rem;
+
+    a {
         color: v.$indigo;
+        font-weight: bold;
+        text-decoration: underline;
+        transition: color .2s ease;
+
+        &:hover {
+            color: darken(v.$indigo, 10%);
+        }
     }
 }
