@@ -26,7 +26,19 @@ class DashboardController{
 
         if($_SERVER["REQUEST_METHOD"] === "POST"){
             $proyecto = new Proyecto($_POST);
-            debuguear($proyecto);
+            
+            $alertas = $proyecto->validarProyecto();
+
+            if(empty($alertas)){
+                $hash = md5(uniqid());
+                $proyecto->url = $hash;
+
+                $proyecto->propietarioId = $_SESSION["id"];
+
+                $proyecto->guardar();
+
+                header("Location: /proyecto?url=" . $proyecto->url);
+            }
         }
 
         $router->render("dashboard/crear-proyecto", [
