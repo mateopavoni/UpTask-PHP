@@ -28,6 +28,8 @@ $router->get("/crear-proyecto",[DashboardController::class, "crear"]);
 $router->post("/crear-proyecto",[DashboardController::class, "crear"]);
 $router->get("/perfil",[DashboardController::class, "perfil"]);
 
+$router->get("/proyecto", [DashboardController::class, "proyecto"]);
+
 
 // Comprueba y valida las rutas, que existan y les asigna las funciones del Controlador
 $router->comprobarRutas();
