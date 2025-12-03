@@ -35,16 +35,19 @@
         .opciones{
             display: flex;
             justify-content: space-between;
+            
         }
 
         .submit-nueva-tarea{
             @include m.boton(v.$indigo, v.$blanco);
             display: inline-block;
+            font-size: 1.4rem
         }
 
         .cerrar-modal{
             @include m.boton(v.$naranja, v.$blanco);
             display: inline-block;
+            font-size: 1.4rem
         }
 
         &.animar{

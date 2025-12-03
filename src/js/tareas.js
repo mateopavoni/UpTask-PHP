@@ -61,6 +61,8 @@
             mostrarAlerta("El nombre de la tarea es obligatorio", "error", document.querySelector(".formulario legend"));
             return;
         }
+
+        agregarTarea(tarea);
     }
 
     function mostrarAlerta(mensaje, tipo, referencia){
@@ -77,6 +79,10 @@
         setTimeout(() => {
             alerta.remove();
         }, 5000);
+    }
+
+    function agregarTarea(){
+        
     }
 
 })();
