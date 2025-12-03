@@ -24,6 +24,9 @@ class Proyecto extends ActiveRecord {
             self::$alertas["error"][] = "El nombre del proyecto es obligatorio";
         }
 
-        return self::$alertas
-;    }
+        return self::$alertas;    
+    }
+
+    
+
 }

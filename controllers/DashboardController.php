@@ -13,8 +13,12 @@ class DashboardController{
 
         isAuth();
 
+        $proyectos = Proyecto::whereALL("propietarioId", $_SESSION["id"]);
+    
+
         $router->render("dashboard/index", [
-            "titulo" => "Proyectos"
+            "titulo" => "Proyectos",
+            "proyectos" => $proyectos
         ]);
     }
 

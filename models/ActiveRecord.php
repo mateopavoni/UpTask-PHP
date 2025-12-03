@@ -72,6 +72,13 @@ class ActiveRecord {
         return array_shift($resultado);
     }
 
+    public static function whereALL($columna, $valor) {
+        $query = "SELECT * FROM " . static::$tabla . " WHERE TRIM({$columna}) = '{$valor}'";
+        
+        $resultado = self::consultarSQL($query);
+        return $resultado;
+    }
+
 
     // SQL para Consultas Avanzadas.
     public static function SQL($consulta) {
