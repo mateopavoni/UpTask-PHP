@@ -19,9 +19,11 @@
             padding: 2rem;
             transition: all .3s ease-in-out;
             font-weight: bold;
-            &:hover{
+            margin-bottom: .5rem;
+            &:hover,
+            &.activo{
                 background-color: darken(v.$indigo, 20%);
-                border-radius: 1rem;
+                border-radius: .5rem;
             }
         }
     }
