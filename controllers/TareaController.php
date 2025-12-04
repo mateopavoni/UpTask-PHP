@@ -83,8 +83,8 @@ class TareaController {
             $tarea = new Tarea($_POST);
             $tarea->proyectoId = $proyecto->id;
             $resultado = $tarea->guardar();
-                if($resultado){
-                    $respuesta = [
+            if($resultado){
+                $respuesta = [
                     "tipo" => "exito",
                     "id" => $tarea->id,
                     "proyectoId" => $proyecto->id,
@@ -97,7 +97,27 @@ class TareaController {
 
     public static function eliminar(){
         if($_SERVER["REQUEST_METHOD"] === "POST"){
-            
+            session_start();
+            $proyecto = Proyecto::where("url",  $_POST["proyectoId"]);
+
+            if(!$proyecto || $proyecto->propietarioId !== $_SESSION["id"]){
+                $respuesta = [
+                    "tipo" => "error",
+                    "mensaje" => "Hubo un error al eliminar la tarea"
+                ];
+                echo json_encode($respuesta);
+                return;
+            }
         }
+
+        $tarea = new Tarea($_POST);
+        $resultado = $tarea->eliminar();
+        $resultado = [
+            "resultado" => $resultado,
+            "mensaje" => "Tarea eliminada correctamente",
+            "tipo" => "exito"
+        ];
+
+        echo json_encode($resultado);
     }
 }
