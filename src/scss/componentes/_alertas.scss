@@ -14,7 +14,8 @@
         color: v.$rojo;
     }
 
-    &.success{
+    &.success, 
+    &.exito{
         background-color: lighten(v.$verde, 60%);
         border-left: .5rem solid v.$verde;
         color: v.$verde;
