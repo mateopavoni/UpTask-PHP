@@ -16,6 +16,8 @@ class Usuario extends ActiveRecord {
     public $password2;
     public $confirmado;
     public $token;
+    public $password_actual;
+    public $password_nuevo;
 
     public function __construct($args = []){
         $this->id = $args["id"] ?? null;
@@ -24,6 +26,8 @@ class Usuario extends ActiveRecord {
         $this->email = $args["email"] ?? "";
         $this->password = $args["password"] ?? "";
         $this->password2 = $args["password2"] ?? "";
+        $this->password_actual = $args["password_actual"] ?? "";
+        $this->password_nuevo = $args["password_nuevo"] ?? "";
         $this->confirmado = $args["confirmado"] ?? 0;
         $this->token = $args["token"] ?? "";
     }
@@ -56,6 +60,34 @@ class Usuario extends ActiveRecord {
         return self::$alertas;
     }
 
+    public function nuevo_password(){
+        if(!$this->password_actual){
+            self::$alertas["error"][] = "El password actual es obligatorio";
+        }
+
+        if(!$this->password_nuevo){
+            self::$alertas["error"][] = "El nuevo password es obligatorio";
+        }
+
+        if(strlen($this->password_nuevo) < 8){
+            self::$alertas["error"][] = "El nuevo password debe tener al menos 8 carácteres";
+        }
+
+        if(!$this->password2){
+            self::$alertas["error"][] = "Debe repetir el nuevo password";
+        }
+
+        if($this->password_nuevo !== $this->password2){
+            self::$alertas["error"][] = "Los nuevos passwords no coinciden";
+        }
+
+        if($this->password_nuevo === $this->password_actual){
+            self::$alertas["error"][] = "El nuevo password no puede ser igual al actual";
+        }
+
+        return self::$alertas;
+    }
+
     public function validarPerfil(){
         if(!$this->nombre){
             self::$alertas["error"][] = "El nombre del usuario es obligatorio";
@@ -70,7 +102,7 @@ class Usuario extends ActiveRecord {
         }
 
         return self::$alertas;
-    }
+    } 
 
     public function hashPassword(){
         $this->password = password_hash($this->password, PASSWORD_BCRYPT);
@@ -122,6 +154,10 @@ class Usuario extends ActiveRecord {
         }
 
         return self::$alertas;
+    }
+
+    public function comprobar_password(){
+        return password_verify($this->password_actual, $this->password);
     }
 
 }
