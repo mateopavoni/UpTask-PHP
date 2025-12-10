@@ -2,12 +2,51 @@
 
     obtenerTareas();
     let tareas = [];
+    let filtradas = [];
 
 
     const nuevaTareaBtn = document.querySelector("#agregar-tarea");
     nuevaTareaBtn.addEventListener("click",function(){
         mostrarFormulario();
     });
+
+    const filtros = document.querySelectorAll("#filtros input[type='radio']");
+
+    filtros.forEach(filtro =>  {
+        filtro.addEventListener("input", filtrarTareas);
+    });
+
+    function filtrarTareas(e){
+        const valor = e.target.value;
+
+        if(valor !== ""){
+            filtradas = tareas.filter(tarea => tarea.estado === valor);
+        } else{
+            filtradas = [];
+        }
+
+        mostrarTareas();
+    } 
+
+    function totalPendientes(){
+        const totalPendientes = tareas.filter(tarea => tarea.estado === "0");
+        const pendientesRadio = document.querySelector("#pendientes");
+        if(totalPendientes.length ===  0){
+            pendientesRadio.disabled = true;
+        } else {
+            pendientesRadio.disabled = false;
+        }
+    }
+
+    function totalCompletadas(){
+        const totalCompletadas = tareas.filter(tarea => tarea.estado === "1");
+        const completadasRadio = document.querySelector("#completadas");
+        if(totalCompletadas.length ===  0){
+            completadasRadio.disabled = true;
+        }else {
+            completadasRadio.disabled = false;
+        }
+    }
 
     async function obtenerTareas(){
         try{
@@ -34,8 +73,13 @@
     }
 
     function mostrarTareas(){
+        totalPendientes();
+        totalCompletadas();
         limpiarTareas();
-        if(tareas.length === 0){
+
+        const arrayTareas = filtradas.length ? filtradas : tareas;
+
+        if(arrayTareas.length === 0){
             const contenedorTareas = document.querySelector("#listado-tareas")
             const textoNoTareas = document.createElement("LI");
 
@@ -51,7 +95,7 @@
             1: "Completa"
         }
 
-        tareas.forEach(tarea => {
+        arrayTareas.forEach(tarea => {
             const contenedorTarea = document.createElement("LI");
             contenedorTarea.dataset.tareaId = tarea.id;
             contenedorTarea.classList.add("tarea");
