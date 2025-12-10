@@ -30,6 +30,9 @@ $router->get("/dashboard",[DashboardController::class, "index"]);
 $router->get("/crear-proyecto",[DashboardController::class, "crear"]);
 $router->post("/crear-proyecto",[DashboardController::class, "crear"]);
 $router->get("/perfil",[DashboardController::class, "perfil"]);
+$router->post("/perfil",[DashboardController::class, "perfil"]);
+$router->get("/cambiar-password",[DashboardController::class, "cambiar_password"]);
+$router->post("/cambiar-password",[DashboardController::class, "cambiar_password"]);
 
 $router->get("/proyecto", [DashboardController::class, "proyecto"]);
 
